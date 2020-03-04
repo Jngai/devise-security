@@ -24,7 +24,7 @@ Warden::Manager.after_set_user only: :fetch do |record, warden, options|
   if record.devise_modules.include?(:session_limitable) &&
      warden.authenticated?(scope) &&
      options[:store] != false
-    if record.role != "admin"
+    unless record.admin?
       if record.unique_session_id != warden.session(scope)['unique_session_id'] &&
          !env['devise.skip_session_limitable'] &&
          !record.skip_session_limitable?
